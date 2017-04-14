@@ -55,14 +55,17 @@
 			// Cabeçalho.
 			context.font = 'bold 16px Arial';
 			context.fillStyle = textColor;
-			context.fillText('Área: ' + area.width + 'x' + area.height + ' (cm)', centerX, centerY - 30);
+			
+			context.fillText('Área: ' + area.width + 'x' + area.height + ' (cm)',
+				centerX, centerY - 30);
 			
 			// Informações.
 			context.font = '12px Arial';
 			context.fillText(title, centerX, centerY - 10);
 			
 			// Legenda.
-			context.fillText('Total de ' + (fullTiles + clippedTiles) + ' pisos utilizados.', centerX, centerY + (area.height * scale) + 20);
+			context.fillText('Total de ' + (fullTiles + clippedTiles) + ' pisos utilizados.',
+				centerX, centerY + (area.height * scale) + 20);
 		}
 		
 		// Desenha a legenda.
@@ -272,7 +275,7 @@
 	</form>
 
 	<div>
-		<canvas id='draw-canvas'>Seu navegador não suporta a tag &lt;CANVAS&gt.</canvas>
+		<canvas id='draw-canvas'>Seu navegador não suporta a tag &lt;CANVAS&gt;.</canvas>
 	</div>
 
 	<script type='text/javascript'>
