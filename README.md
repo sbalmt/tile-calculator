@@ -1,5 +1,5 @@
 # Tile Calc
-Calculadora para o desafio de mini projeto JavaScript do [BugginhoDeveloper](https://github.com/BugginhoDeveloper)
+Calculadora de pisos para o desafio de mini projeto JavaScript do [BugginhoDeveloper](https://github.com/BugginhoDeveloper)
 
 ## Versão Web
 Execute o arquivo [web/index.html](https://github.com/balmanth/tilecalc/blob/master/web/index.html) em um navegador com suporte HTML5 e JavaScript habilitado.
