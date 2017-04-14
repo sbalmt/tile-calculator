@@ -1,4 +1,4 @@
-# Tile Calculator
+# Tile Calc
 Calculadora para o desafio de mini projeto JavaScript do [BugginhoDeveloper](https://github.com/BugginhoDeveloper)
 
 ## Versão Web
