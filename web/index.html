@@ -47,11 +47,12 @@
 		var fullColor = 'rgb(34,177,76)';
 		var clippedColor = 'rgb(112,146,190)';
 		var reusedColor = 'rgb(185,122,87)';
-		var spaceColor = 'rgb(60,60,60)';
+		var spaceColor = 'rgb(80,80,80)';
 		var backColor = 'rgb(245,245,245)';
 		
 		var normalFont = '12px Arial';
 		var headerFont = 'bold 16px Arial';
+		var tileFont = '9px Arial';
 		
 		// Desenha os textos informativos.
 		function DrawText(area, scale, title){
@@ -113,33 +114,42 @@
 		function DrawTiles(tile, area, space, scale){
 		
 			// Área na escala do desenho.
-			var areaW = (area.width * scale);
-			var areaH = (area.height * scale);
+			var areaW = area.width * scale;
+			var areaH = area.height * scale;
 			
 			// Piso na escala do desenho.
-			var tileW = (tile.width * scale);
-			var tileH = (tile.height * scale);
-			var tileA = (tileW * tileH);
+			var tileP = space * scale;
+			var tileW = tile.width * scale;
+			var tileH = tile.height * scale;
+			var tileA = tileW * tileH;
+			
+			// Espaço utilizado pelo piso.
+			var spaceW = tileW + tileP;
+			var spaceH = tileH + tileP;
 			
 			// Utilização do piso cortado.
 			var clipA = 0; // Área de sobra do corte.
 			var clipS = 0; // Tamanho de sobra do corte (usado em conjunto com clipT)
 			var clipT = false; // Quando 'true' considera a altura, quando 'false' considera a largura.
-			
-			space *= scale;
 
 			// Configurações persistentes.
-			context.lineWidth = space;
+			context.lineWidth = tileP;
 			context.strokeStyle = spaceColor;
+			context.font = tileFont;
+			
+			for(var x = tileP; x < areaW; x += spaceW){
 
-			for(var x = space; x < areaW; x += (tileW + space)){
+				// Se a largura disponível for suficiente para largura do próximo piso atribui a largura do piso inteiro.
+				// Caso contrário, atribui a largura do espaço disponível.
+				var reqW = ((x + tileW) <= areaW ? tileW : (areaW - (x + tileP)));
 
-				var reqX = ((x + tileW) <= areaW ? tileW : (areaW - x));
-
-				for(var y = space; y < areaH; y += (tileH + space)){
+				for(var y = tileP; y < areaH; y += spaceH){
 				
-					var reqY = ((y + tileH) <= areaH ? tileH : (areaH - y));
-					var reqA = (reqX * reqY);
+					// Se a altura disponível for suficiente para altura do próximo piso atribui a altura do piso inteiro.
+					// Caso contrário, atribui a altura do espaço disponível.
+					var reqH = ((y + tileH) <= areaH ? tileH : (areaH - (y + tileP)));
+					
+					var reqA = (reqW * reqH);
 
 					// Piso inteiro.
 					if(tileA == reqA){
@@ -150,12 +160,12 @@
 					}else{
 
 						// A área de corte é suficiente, tamanho do corte é suficiente.
-						if((clipA - reqA) >= 0 && (reqX <= clipS || reqY <= clipS)){
+						if((clipA - reqA) >= 0 && ((clipT && reqW <= clipS) || (!clipT && reqH <= clipS))){
 
 							context.fillStyle = reusedColor;
 							
 							clipA -= reqA;
-							clipS -= (clipT ? reqX : reqY);
+							clipS -= (clipT ? reqW : reqH);
 
 							++reusedTiles;
 
@@ -166,11 +176,11 @@
 							
 							clipA = tileA - reqA;
 							
-							if(tileW != reqX){
-								clipS = tileW - reqX;
+							if(tileW != reqW){
+								clipS = tileW - reqW;
 								clipT = true;
-							}else if(tileH != reqY){
-								clipS = tileH - reqY;
+							}else if(tileH != reqH){
+								clipS = tileH - reqH;
 								clipT = false;
 							}
 
@@ -179,8 +189,10 @@
 					}
 					
 					// Desenha o piso.
-					context.fillRect(centerX + x, centerY + y, reqX, reqY);
-					context.strokeRect(centerX + x - space, centerY + y - space, reqX + space, reqY + space);
+					context.fillRect(centerX + x, centerY + y, reqW, reqH);
+					
+					// Desenha o rejunte.
+					context.strokeRect(centerX + x - tileP, centerY + y - tileP, reqW + tileP, reqH + tileP);
 				}
 			}
 		}
