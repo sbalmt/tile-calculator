@@ -18,8 +18,7 @@
 			box-sizing: border-box;
 			display: inline-block;
 			border: 1px solid rgb(180,180,180);
-			min-width: 5em;
-			max-width: 5em;
+			width: 5em;
 			min-height: 1.5em;
 			padding: 0.5em;
 		}
@@ -31,6 +30,7 @@
 	</style>
 
 	<script type='text/javascript'>
+	"use strict";
 	
 	function Display(canvas){
 
@@ -48,19 +48,23 @@
 		var clippedColor = 'rgb(112,146,190)';
 		var reusedColor = 'rgb(185,122,87)';
 		var spaceColor = 'rgb(60,60,60)';
-
+		var backColor = 'rgb(245,245,245)';
+		
+		var normalFont = '12px Arial';
+		var headerFont = 'bold 16px Arial';
+		
 		// Desenha os textos informativos.
 		function DrawText(area, scale, title){
 
 			// Cabeçalho.
-			context.font = 'bold 16px Arial';
+			context.font = headerFont;
 			context.fillStyle = textColor;
 			
 			context.fillText('Área: ' + area.width + 'x' + area.height + ' (cm)',
 				centerX, centerY - 30);
 			
 			// Informações.
-			context.font = '12px Arial';
+			context.font = normalFont;
 			context.fillText(title, centerX, centerY - 10);
 			
 			// Legenda.
@@ -85,8 +89,7 @@
 			// Configurações persistentes.
 			context.lineWidth = 1;
 			context.strokeStyle = textColor;
-
-			context.font = '12px Arial';
+			context.font = normalFont;
 	
 			for(var i=0; i<legends.length; ++i){
 
@@ -128,7 +131,6 @@
 			// Configurações persistentes.
 			context.lineWidth = space;
 			context.strokeStyle = spaceColor;
-			context.font = '10px Arial';
 
 			for(var x = space; x < areaW; x += (tileW + space)){
 
@@ -137,9 +139,10 @@
 				for(var y = space; y < areaH; y += (tileH + space)){
 				
 					var reqY = ((y + tileH) <= areaH ? tileH : (areaH - y));
+					var reqA = (reqX * reqY);
 
 					// Piso inteiro.
-					if((reqX * reqY) == tileA){
+					if(tileA == reqA){
 					
 						context.fillStyle = fullColor;
 						++fullTiles;
@@ -147,11 +150,11 @@
 					}else{
 
 						// A área de corte é suficiente, tamanho do corte é suficiente.
-						if((clipA - (reqX * reqY)) >= 0 && (reqX <= clipS || reqY <= clipS)){
+						if((clipA - reqA) >= 0 && (reqX <= clipS || reqY <= clipS)){
 
 							context.fillStyle = reusedColor;
 							
-							clipA -= (reqX * reqY);
+							clipA -= reqA;
 							clipS -= (clipT ? reqX : reqY);
 
 							++reusedTiles;
@@ -161,7 +164,7 @@
 						
 							context.fillStyle = clippedColor;
 							
-							clipA = (tileA - (reqX * reqY));
+							clipA = tileA - reqA;
 							
 							if(tileW != reqX){
 								clipS = tileW - reqX;
@@ -195,7 +198,7 @@
 		
 			context.save();
 			
-			context.fillStyle = 'rgb(245,245,245)';
+			context.fillStyle = backColor;
 			context.fillRect(0, 0, canvas.width, canvas.height);
 			
 			context.restore();
@@ -224,7 +227,7 @@
 			
 				// Demonstração A
 				Reset();
-				centerX -= ((area.width * scale) / 2);;
+				centerX -= ((area.width * scale) / 2);
 				
 				DrawTiles(tile, area, space, scale);
 				DrawText(area, scale, 'Piso na ' + textA);
@@ -279,7 +282,8 @@
 	</div>
 
 	<script type='text/javascript'>
-
+		"use strict";
+		
 		var form = document.getElementById('draw-form');
 		var canvas = document.getElementById('draw-canvas');
 		var display = new Display(canvas);
@@ -296,19 +300,19 @@
 		form['draw-calc'].onclick = function(){
 		
 			var area = {
-				width: form['draw-area-width'].value,
-				height: form['draw-area-height'].value
+				width: parseInt(form['draw-area-width'].value),
+				height: parseInt(form['draw-area-height'].value)
 			};
 
 			var tile = {
-				width: form['draw-tile-width'].value,
-				height: form['draw-tile-height'].value
+				width: parseInt(form['draw-tile-width'].value),
+				height: parseInt(form['draw-tile-height'].value)
 			};
 
 			var space = form['draw-tile-space'].value;
 
 			var scale = ((canvas.height - 225) / (area.height > area.width ? area.height : area.width));
-			
+
 			display.Draw(area, tile, space, scale);
 		}
 		
