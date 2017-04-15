@@ -16,9 +16,8 @@
 		}
 		form#draw-form input, form#draw-form button {
 			box-sizing: border-box;
-			display: inline-block;
 			border: 1px solid rgb(180,180,180);
-			width: 5em;
+			width: 6em;
 			min-height: 1.5em;
 			padding: 0.5em;
 		}
@@ -273,18 +272,18 @@
 	<form id='draw-form'>
 		<fieldset>
 			<legend>Área (cm)</legend>
-			<input type='number' value='100' name='draw-area-width' step='1' placeholder='Largura' required>
-			<input type='number' value='100' name='draw-area-height' step='1' placeholder='Altura' required>
+			<input type='number' name='draw-area-width' step='1' min='100' placeholder='Largura' required>
+			<input type='number' name='draw-area-height' step='1' min='100' placeholder='Altura' required>
 		</fieldset>
 		<fieldset>
 			<legend>Piso (cm)</legend>
-			<input type='number' value='40' name='draw-tile-width' step='1' placeholder='Largura' required>
-			<input type='number' value='40' name='draw-tile-height' step='1' placeholder='Altura' required>
-			<input type='number' value='1' name='draw-tile-space' step='1' placeholder='Espaçamento' required>
+			<input type='number' name='draw-tile-width' step='1' min='10' placeholder='Largura' required>
+			<input type='number' name='draw-tile-height' step='1' min='10' placeholder='Altura' required>
+			<input type='number' value='1' name='draw-tile-space' step='1' min='1' placeholder='Espaçamento' required>
 		</fieldset>
 		<fieldset>
 			<legend>Ações</legend>
-			<button type='button' name='draw-calc'>Calcular</button>
+			<button type='submit' name='draw-calc'>Calcular</button>
 			<button type='button' name='draw-clear'>Limpar</button>
 		</fieldset>
 	</form>
