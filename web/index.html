@@ -139,13 +139,13 @@
 			
 			for(var x = tileP; x < areaW; x += spaceW){
 
-				// Se a largura disponível for suficiente para largura do próximo piso atribui a largura do piso inteiro.
+				// Se a largura disponível for suficiente para largura do próximo piso atribui a largura do piso.
 				// Caso contrário, atribui a largura do espaço disponível.
 				var reqW = ((x + tileW) <= areaW ? tileW : (areaW - (x + tileP)));
 
 				for(var y = tileP; y < areaH; y += spaceH){
 				
-					// Se a altura disponível for suficiente para altura do próximo piso atribui a altura do piso inteiro.
+					// Se a altura disponível for suficiente para altura do próximo piso atribui a altura do piso.
 					// Caso contrário, atribui a altura do espaço disponível.
 					var reqH = ((y + tileH) <= areaH ? tileH : (areaH - (y + tileP)));
 					
