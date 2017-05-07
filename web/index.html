@@ -138,25 +138,28 @@
 			
 			for(var x = tileP; x < areaW; x += spaceW){
 
-				// Se a largura disponível for suficiente para largura do próximo piso atribui a largura do piso.
-				// Caso contrário, atribui a largura do espaço disponível.
+				// Se a largura requerida for suficiente para largura do próximo piso inteiro, 
+				// atribui a largura do piso inteiro. Caso contrário, atribui a largura requerida.
 				var reqW = ((x + tileW) <= areaW ? tileW : (areaW - (x + tileP)));
 
 				for(var y = tileP; y < areaH; y += spaceH){
 				
-					// Se a altura disponível for suficiente para altura do próximo piso atribui a altura do piso.
-					// Caso contrário, atribui a altura do espaço disponível.
+					// Se a altura requerida for suficiente para altura do próximo piso inteiro, 
+					// atribui a altura do piso inteiro. Caso contrário, atribui a altura requerida.
 					var reqH = ((y + tileH) <= areaH ? tileH : (areaH - (y + tileP)));
 					
+					// Área requerida.
 					var reqA = (reqW * reqH);
 
-					// Piso inteiro.
+					// A área requerida é para um piso inteiro.
 					if(tileA == reqA){
 					
 						context.fillStyle = fullColor;
 						++fullTiles;
 						
-					}else{
+					}
+					// A área requerida é menor que um piso inteiro.
+					else{ 
 
 						// A área de corte é suficiente, tamanho do corte é suficiente.
 						if((clipA - reqA) >= 0 && ((clipT && reqW <= clipS) || (!clipT && reqH <= clipS))){
@@ -175,10 +178,13 @@
 							
 							clipA = tileA - reqA;
 							
+							// Novo corte na altura.
 							if(tileW != reqW){
 								clipS = tileW - reqW;
 								clipT = true;
-							}else if(tileH != reqH){
+							}
+							// Novo corte na largura.
+							else if(tileH != reqH){
 								clipS = tileH - reqH;
 								clipT = false;
 							}
